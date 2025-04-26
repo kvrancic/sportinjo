@@ -188,7 +188,7 @@ export default function SportsAroundMe() {
     <div className="max-w-7xl mx-auto bg-white min-h-screen flex flex-col px-4 sm:px-6">
       {/* Header */}
       <header className="flex justify-between items-center py-6">
-        <h1 className="text-2xl font-bold text-gray-800">Sportinjo</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Sports-Around-Me</h1>
         <div className="flex items-center gap-3">
           <div className="relative notifications-container">
             <button
@@ -274,10 +274,10 @@ export default function SportsAroundMe() {
           </div>
 
           {/* Points indicator */}
-          <div className="flex items-center bg-yellow-100 rounded-full px-3 py-1.5">
+          <Link href="/rewards" className="flex items-center bg-yellow-100 rounded-full px-3 py-1.5">
             <Trophy className="w-4 h-4 text-yellow-600 mr-1.5" />
             <span className="text-sm font-medium text-yellow-800">125</span>
-          </div>
+          </Link>
 
           <div className="w-10 h-10 rounded-full bg-emerald-200 flex items-center justify-center">
             <div className="w-6 h-6 rounded-full bg-gray-800"></div>

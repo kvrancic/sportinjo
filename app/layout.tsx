@@ -8,7 +8,6 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Sports Around Me",
   description: "Find sports activities near you",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -22,4 +21,3 @@ export default function RootLayout({
     </html>
   )
 }
-

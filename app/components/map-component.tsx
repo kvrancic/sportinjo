@@ -1,58 +1,63 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMap,
-  Circle,
-} from "react-leaflet"
+import { useEffect, useRef, useState, useId } from "react"
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import "leaflet.markercluster/dist/leaflet.markercluster.js"
 import "leaflet.markercluster/dist/MarkerCluster.css"
 import "leaflet.markercluster/dist/MarkerCluster.Default.css"
 
-import ReactDOMServer from "react-dom/server"
-import * as GiIcons from "react-icons/gi"
-
 /* -------------------------------------------------------------
- * 1. Sport‑to‑icon mapping                                     
+ * 1. Sport-to-emoji mapping
  * -----------------------------------------------------------*/
-const sportIconName: Record<string, string> = {
-  Football: "GiSoccerBall",
-  Basketball: "GiBasketballBall",
-  "Water Polo": "GiWaterPolo",
-  Tennis: "GiTennisBall",
-  "Ice Hockey": "GiHockey",
-  Running: "GiRunningShoe",
-  Fencing: "GiFencer",
-  "Ultimate Frisbee": "GiFrisbee",
-  Pétanque: "GiBocceBall", // if missing → fallback
+const sportEmoji: Record<string, string> = {
+  Football: "⚽",
+  Basketball: "🏀",
+  "Water Polo": "🤽",
+  Tennis: "🎾",
+  "Ice Hockey": "🏒",
+  Running: "🏃",
+  Fencing: "🤺",
+  "Ultimate Frisbee": "🥏",
+  Pétanque: "🎯",
+  Volleyball: "🏐",
+  Swimming: "🏊",
+  Cycling: "🚴",
+  Handball: "🤾",
+  Boxing: "🥊",
+  "Table Tennis": "🏓",
+  Badminton: "🏸",
+  Golf: "⛳",
+  Skiing: "⛷️",
+  Rowing: "🚣",
+  Gymnastics: "🤸",
+  Yoga: "🧘",
+  Climbing: "🧗",
+  Bowling: "🎳",
+  Surfing: "🏄",
+  Karate: "🥋",
+  Judo: "🥋",
+  Archery: "🏹",
+  Sailing: "⛵",
+  Rugby: "🏉",
+  Baseball: "⚾",
 }
 
-const createSportIcon = (sport: string) => {
-  const iconKey = sportIconName[sport] ?? "GiCircle"
-  // @ts-ignore – react‑icons exports are dynamic
-  const IconCmp = (GiIcons as any)[iconKey] ?? (GiIcons as any).GiCircle
-
-  const svgMarkup = ReactDOMServer.renderToStaticMarkup(
-    <IconCmp size={28} />
-  )
+const createEventMarker = (sport: string) => {
+  const emoji = sportEmoji[sport] || "🏆" // Default to trophy if sport not found
 
   return L.divIcon({
-    html: svgMarkup,
-    className: "sport-marker",
-    iconSize: [28, 28],
-    iconAnchor: [14, 28],
-    popupAnchor: [0, -28],
+    html: `<div class="emoji-marker">${emoji}</div>`,
+    className: "emoji-marker-container",
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
+    popupAnchor: [0, -20],
   })
 }
 
 /* -------------------------------------------------------------
- * 2.  Static user‑location icon (PNG)                          
+ * 2.  Static user-location icon (PNG)
  * -----------------------------------------------------------*/
 const userIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
@@ -60,7 +65,7 @@ const userIcon = new L.Icon({
 })
 
 /* -------------------------------------------------------------
- * 3.  Keep map centred on user                                 
+ * 3.  Keep map centred on user
  * -----------------------------------------------------------*/
 function SetViewOnUser({ coords }: { coords: L.LatLngExpression }) {
   const map = useMap()
@@ -71,7 +76,7 @@ function SetViewOnUser({ coords }: { coords: L.LatLngExpression }) {
 }
 
 /* -------------------------------------------------------------
- * 4.  Marker clustering                                        
+ * 4.  Marker clustering
  * -----------------------------------------------------------*/
 export interface EventItem {
   id: string | number
@@ -95,13 +100,14 @@ function MarkerClusterComponent({
   useEffect(() => {
     if (!map) return
 
+    // initialise cluster-layer once
     if (!clusterGroupRef.current) {
       clusterGroupRef.current = L.markerClusterGroup({
         iconCreateFunction(cluster) {
           return L.divIcon({
-            html: `<div class="cluster-icon">${cluster.getChildCount()}</div>`,
+            html: `<div class="cluster-icon"> ${cluster.getChildCount()}</div>`,
             className: "custom-marker-cluster",
-            iconSize: L.point(40, 40, true),
+            iconSize: L.point(50, 50, true),
           })
         },
         maxClusterRadius(zoom) {
@@ -120,7 +126,7 @@ function MarkerClusterComponent({
       if (!ev.coordinates || ev.coordinates.length !== 2) return
 
       const marker = L.marker(ev.coordinates, {
-        icon: createSportIcon(ev.sport),
+        icon: createEventMarker(ev.sport),
         title: ev.title,
       }).bindPopup(
         `<div class="text-center">
@@ -128,7 +134,7 @@ function MarkerClusterComponent({
            <p>${ev.sport}</p>
            <p>${ev.location}</p>
            <p>${ev.time}</p>
-         </div>`
+         </div>`,
       )
 
       marker.on("click", () => onMarkerClick(ev))
@@ -144,9 +150,9 @@ function MarkerClusterComponent({
 }
 
 /* -------------------------------------------------------------
- * 5.  Top‑level map component – now with a **minimal** base‑map
+ * 5.  Inner Leaflet map
  * -----------------------------------------------------------*/
-export default function MapComponent({
+function MapLeaflet({
   userLocation,
   events,
   onMarkerClick,
@@ -155,32 +161,31 @@ export default function MapComponent({
   events: EventItem[]
   onMarkerClick: (e: EventItem) => void
 }) {
+  const mapId = useId() // unique DOM id per mount
+
+  /* ---- clear any old Leaflet instance left by hot-reload ---- */
   useEffect(() => {
-    // fix Leaflet default‑icon paths in Next.js
+    const stale = L.DomUtil.get(mapId as string) as any
+    if (stale && stale._leaflet_id) {
+      stale._leaflet_id = null
+    }
+  }, [mapId])
+
+  /* ---- fix default icon paths once ---- */
+  useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     delete L.Icon.Default.prototype._getIconUrl
     L.Icon.Default.mergeOptions({
-      iconRetinaUrl:
-        "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+      iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
       iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
       shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
     })
   }, [])
 
-  /* ---------------------------------------------------------
-   *  👉  Minimal tile‑set from CARTO                           
-   *  Light background, *no* labels (adds calm aesthetic).     
-   *  If you still want labels, stack a second TileLayer with  
-   *  `light_only_labels`.                                     
-   * -------------------------------------------------------*/
-  const baseTileUrl =
-    "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
-  const labelTileUrl =
-    "https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png"
-
   return (
     <MapContainer
+      id={mapId}
       center={userLocation}
       zoom={13}
       minZoom={10}
@@ -189,30 +194,14 @@ export default function MapComponent({
       style={{ height: "100%", width: "100%" }}
       className="z-0"
     >
-      {/* Minimalistic base map */}
       <TileLayer
         attribution="&copy; <a href='https://carto.com/attributions'>CARTO</a> &copy; OpenStreetMap"
-        url={baseTileUrl}
+        url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
       />
-      {/* Optional, uncomment to add subtle labels */}
-      {/* <TileLayer url={labelTileUrl} /> */}
 
-      {/* Logged‑in user position */}
       <Marker position={userLocation} icon={userIcon}>
         <Popup>You are here</Popup>
       </Marker>
-
-      {/* Accuracy radius */}
-      <Circle
-        center={userLocation}
-        radius={500}
-        pathOptions={{
-          fillColor: "#0284c7",
-          fillOpacity: 0.08,
-          color: "#0284c7",
-          weight: 1,
-        }}
-      />
 
       <MarkerClusterComponent events={events} onMarkerClick={onMarkerClick} />
       <SetViewOnUser coords={userLocation} />
@@ -221,7 +210,22 @@ export default function MapComponent({
 }
 
 /* -------------------------------------------------------------
- * 6.  Tailwind helper classes (optional)                       
+ * 6.  Wrapper – render only on the client
+ * -----------------------------------------------------------*/
+export default function MapComponent(props: {
+  userLocation: [number, number]
+  events: EventItem[]
+  onMarkerClick: (e: EventItem) => void
+}) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return null
+
+  return <MapLeaflet {...props} />
+}
+
+/* -------------------------------------------------------------
+ * 7.  Tailwind helpers (optional)
  * -----------------------------------------------------------*/
 /*
 .sport-marker svg {
@@ -229,5 +233,24 @@ export default function MapComponent({
 }
 .custom-marker-cluster {
   @apply flex items-center justify-center bg-emerald-600 text-white rounded-full font-bold;
+}
+*/
+
+/* -------------------------------------------------------------
+ * 7.  Tailwind helpers (optional)
+ * -----------------------------------------------------------*/
+/*
+.sport-marker svg {
+  @apply text-emerald-600 drop-shadow;
+}
+.custom-marker-cluster {
+  @apply flex items-center justify-center bg-emerald-600 text-white rounded-full font-bold;
+}
+
+.event-marker-container {
+  @apply relative;
+}
+.event-marker {
+  @apply w-6 h-6 bg-emerald-500 rounded-full border-2 border-white shadow-md;
 }
 */

@@ -188,7 +188,7 @@ export default function SportsAroundMe() {
     <div className="max-w-7xl mx-auto bg-white min-h-screen flex flex-col px-4 sm:px-6">
       {/* Header */}
       <header className="flex justify-between items-center py-6">
-        <h1 className="text-2xl font-bold text-gray-800">Sports-Around-Me</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Sportinjo</h1>
         <div className="flex items-center gap-3">
           <div className="relative notifications-container">
             <button

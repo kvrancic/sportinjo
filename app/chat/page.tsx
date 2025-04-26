@@ -1,135 +1,150 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from "react"
-import { ArrowLeft, Send, User, Calendar, MapPin, ExternalLink } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
+import { useState, useRef, useEffect } from "react";
+import {
+  ArrowLeft,
+  Send,
+  User,
+  Calendar,
+  MapPin,
+  ExternalLink,
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
-// Mock data for chat messages
-const initialMessages = [
-  {
-    id: 1,
-    sender: "user",
-    text: "Hi! I'm looking for some weekend activities to do with my family in Zagreb. Any suggestions?",
-    timestamp: "10:30 AM",
+// Predodređeni odgovori na pitanja
+const predefinedResponses: Record<string, any> = {
+  "Bok! Tražim ideje za vikend aktivnosti s obitelji u Zagrebu. Imaš li kakav prijedlog?":
+    {
+      text: "Pozdrav! Evo nekoliko obiteljskih sportskih događaja u Zagrebu ovog vikenda:",
+      events: [
+        {
+          id: 1,
+          title: "NK Kašina – NK Brezovica",
+          description:
+            "Uzbudljiva amaterska utakmica koja spaja lokalnu strast i sportski duh. Dođite podržati svoje favorite!",
+          time: "Subota, 18:00",
+          location: "Igralište NK Kašina",
+          image: "/focused-football-drill.png",
+          type: "popular",
+        },
+        {
+          id: 8,
+          title: "Ultimate Frisbee Kup",
+          description: "Zabavan sport za sve uzraste – idealno za obitelji!",
+          time: "Nedjelja, 11:00",
+          location: "Park Bundek",
+          image: "/frisbee-fun.jpeg",
+          type: "hidden-gem",
+        },
+      ],
+    },
+  "Kup u frizbiju zvuči zanimljivo! Je li prikladna za djecu?": {
+    text: "Da! Bit će zone za početnike i djecu uz instruktore i svu potrebnu opremu, a u parku vas čekaju i štandovi s hranom te druge aktivnosti. Odlična, opuštena atmosfera za klince!",
   },
-  {
-    id: 2,
-    sender: "ai",
-    text: "Hello! I'd be happy to suggest some family-friendly sports events in Zagreb this weekend. Here are a few options:",
-    timestamp: "10:30 AM",
-    events: [
-      {
-        id: 1,
-        title: "Dinamo vs Hajduk",
-        description: "The biggest football derby in Croatia! Great atmosphere for the whole family.",
-        time: "Saturday, 18:00",
-        location: "Stadion Maksimir",
-        image: "/vibrant-football-action.png",
-        type: "popular",
-      },
-      {
-        id: 8,
-        title: "Ultimate Frisbee Cup",
-        description: "A fun and exciting sport that's easy for everyone to enjoy. Perfect for families!",
-        time: "Sunday, 11:00",
-        location: "Bundek Park",
-        image: "/placeholder.svg?key=ye827",
-        type: "hidden-gem",
-      },
-    ],
-  },
-  {
-    id: 3,
-    sender: "user",
-    text: "The Frisbee Cup sounds interesting! Is it suitable for kids?",
-    timestamp: "10:32 AM",
-  },
-  {
-    id: 4,
-    sender: "ai",
-    text: "Yes, the Ultimate Frisbee Cup is very family-friendly! There will be areas where beginners and children can try the sport with instructors. They'll provide all the equipment needed, and there's also food stands and other activities in the park. It's a relaxed atmosphere where kids can run around and have fun!",
-    timestamp: "10:32 AM",
-  },
-  {
-    id: 5,
-    sender: "user",
-    text: "Great! Are there any other outdoor activities that might be good if the weather is nice?",
-    timestamp: "10:34 AM",
-  },
-]
+};
+
+// Početna poruka dobrodošlice
+const welcomeMessage = {
+  id: 0,
+  sender: "ai" as const,
+  text: "Dobrodošli u Sportinjo AI Chat! Pitajte me o sportskim događajima u Zagrebu.",
+  timestamp: new Date().toLocaleTimeString("hr-HR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }),
+};
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState(initialMessages)
-  const [newMessage, setNewMessage] = useState("")
-  const messagesEndRef = useRef(null)
+  const [messages, setMessages] = useState<any[]>([welcomeMessage]);
+  const [newMessage, setNewMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+  useEffect(scrollToBottom, [messages, isTyping]);
 
-  const handleSendMessage = () => {
-    if (newMessage.trim() === "") return
+  const simulateTyping = (text: string) => {
+    return new Promise<void>((resolve) => {
+      // Simuliramo vrijeme tipkanja bazirano na duljini teksta
+      setTimeout(() => {
+        resolve();
+      }, 4000);
+    });
+  };
 
-    // Add user message
+  const handleSendMessage = async () => {
+    if (!newMessage.trim()) return;
+
+    // Korisnikova poruka
     const userMessage = {
       id: messages.length + 1,
-      sender: "user",
+      sender: "user" as const,
       text: newMessage,
-      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    }
+      timestamp: new Date().toLocaleTimeString("hr-HR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
 
-    setMessages([...messages, userMessage])
-    setNewMessage("")
+    setMessages((prev) => [...prev, userMessage]);
+    setNewMessage("");
+    setIsTyping(true);
 
-    // Simulate AI response after a short delay
-    setTimeout(() => {
-      const aiResponse = {
-        id: messages.length + 2,
-        sender: "ai",
-        text: "Based on the nice weather forecast, I'd recommend the Zagreb Marathon event at Bundek Park. It's not just for runners - there are family activities, food stalls, and a great atmosphere. There's also a children's mini-marathon that starts at 10:00 AM on Sunday!",
-        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        events: [
-          {
-            id: 6,
-            title: "Zagreb Marathon",
-            description: "A fun event with activities for the whole family, including a children's mini-marathon.",
-            time: "Sunday, 09:00",
-            location: "Bundek Park",
-            image: "/city-marathon-runners.png",
-            type: "popular",
-          },
-        ],
-      }
+    // Pronađi odgovor ili koristi generički
+    const response = predefinedResponses[userMessage.text] || {
+      text: "Nažalost, nemam informacije o tome. Mogu li vam pomoći s nečim drugim vezano uz sportske događaje u Zagrebu?",
+    };
 
-      setMessages((prevMessages) => [...prevMessages, aiResponse])
-    }, 1000)
-  }
+    // Simuliraj vrijeme tipkanja
+    await simulateTyping(response.text);
+
+    // AI odgovor
+    const aiResponse = {
+      id: userMessage.id + 1,
+      sender: "ai" as const,
+      text: response.text,
+      timestamp: new Date().toLocaleTimeString("hr-HR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      ...(response.events && { events: response.events }),
+    };
+
+    setMessages((prev) => [...prev, aiResponse]);
+    setIsTyping(false);
+  };
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      {/* Header */}
+      {/* Zaglavlje */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center">
           <Link href="/" className="mr-4">
             <ArrowLeft className="w-6 h-6 text-gray-700" />
           </Link>
           <div>
-            <h1 className="text-lg font-bold text-gray-800">Chat with Sports AI</h1>
-            <div className="text-sm text-gray-500">Ask about events, recommendations, and more</div>
+            <h1 className="text-lg font-bold text-gray-800">Sportinjo AI</h1>
+            <div className="text-sm text-gray-500">
+              Pitajte o događajima, preporukama i još mnogo toga
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Chat Messages */}
+      {/* Poruke */}
       <div className="flex-1 overflow-y-auto p-4">
         <div className="max-w-3xl mx-auto space-y-4">
           {messages.map((message) => (
-            <div key={message.id} className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}>
+            <div
+              key={message.id}
+              className={`flex ${
+                message.sender === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
               <div
                 className={`max-w-[80%] rounded-lg p-3 ${
                   message.sender === "user"
@@ -140,28 +155,46 @@ export default function ChatPage() {
                 <div className="flex items-center mb-1">
                   <div
                     className={`w-6 h-6 rounded-full flex items-center justify-center mr-2 ${
-                      message.sender === "user" ? "bg-emerald-600" : "bg-emerald-100"
+                      message.sender === "user"
+                        ? "bg-emerald-600"
+                        : "bg-emerald-100"
                     }`}
                   >
                     {message.sender === "user" ? (
                       <User className="w-4 h-4 text-white" />
                     ) : (
-                      <div className="text-emerald-600 font-bold text-xs">AI</div>
+                      <div className="text-emerald-600 font-bold text-xs">
+                        AI
+                      </div>
                     )}
                   </div>
-                  <span className={`text-xs ${message.sender === "user" ? "text-emerald-100" : "text-gray-500"}`}>
+                  <span
+                    className={`text-xs ${
+                      message.sender === "user"
+                        ? "text-emerald-100"
+                        : "text-gray-500"
+                    }`}
+                  >
                     {message.timestamp}
                   </span>
                 </div>
-                <p className={`text-sm ${message.sender === "user" ? "text-white" : "text-gray-800"}`}>
+
+                <p
+                  className={`text-sm ${
+                    message.sender === "user" ? "text-white" : "text-gray-800"
+                  }`}
+                >
                   {message.text}
                 </p>
 
-                {/* Event recommendations */}
-                {message.events && (
+                {/* Preporuke događaja */}
+                {"events" in message && message.events && (
                   <div className="mt-3 space-y-3">
-                    {message.events.map((event) => (
-                      <div key={event.id} className="bg-gray-50 rounded-lg overflow-hidden shadow-sm">
+                    {message.events.map((event: any) => (
+                      <div
+                        key={event.id}
+                        className="bg-gray-50 rounded-lg overflow-hidden shadow-sm"
+                      >
                         <div className="relative h-32">
                           <Image
                             src={event.image || "/placeholder.svg"}
@@ -171,18 +204,22 @@ export default function ChatPage() {
                           />
                           {event.type === "hidden-gem" && (
                             <div className="absolute top-2 right-2 bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
-                              Hidden Gem
+                              Skriveni dragulj
                             </div>
                           )}
                           {event.type === "popular" && (
                             <div className="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
-                              Popular
+                              Popularno
                             </div>
                           )}
                         </div>
                         <div className="p-3">
-                          <h3 className="font-bold text-gray-800">{event.title}</h3>
-                          <p className="text-sm text-gray-600 mt-1">{event.description}</p>
+                          <h3 className="font-bold text-gray-800">
+                            {event.title}
+                          </h3>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {event.description}
+                          </p>
                           <div className="mt-2 space-y-1">
                             <div className="flex items-center text-xs text-gray-500">
                               <Calendar className="w-3 h-3 mr-1" />
@@ -197,7 +234,7 @@ export default function ChatPage() {
                             href={`/event/${event.id}`}
                             className="mt-2 flex items-center text-xs font-medium text-emerald-600"
                           >
-                            <span>View details</span>
+                            <span>Pogledaj detalje</span>
                             <ExternalLink className="w-3 h-3 ml-1" />
                           </Link>
                         </div>
@@ -208,20 +245,46 @@ export default function ChatPage() {
               </div>
             </div>
           ))}
+
+          {/* Indikator tipkanja AI‑ja */}
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="max-w-[80%] rounded-lg p-3 bg-white shadow-sm rounded-bl-none">
+                <div className="flex items-center mb-1">
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center mr-2 bg-emerald-100">
+                    <div className="text-emerald-600 font-bold text-xs">AI</div>
+                  </div>
+                  <span className="text-xs text-gray-500">
+                    {new Date().toLocaleTimeString("hr-HR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+                {/* tri skakućeće točkice */}
+                <div className="flex space-x-1 mt-1">
+                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                </div>
+              </div>
+            </div>
+          )}
+
           <div ref={messagesEndRef} />
         </div>
       </div>
 
-      {/* Message Input */}
+      {/* Unos poruke */}
       <div className="bg-white border-t p-4">
         <div className="max-w-3xl mx-auto flex items-center">
           <input
             type="text"
-            placeholder="Ask about sports events, recommendations, or activities..."
+            placeholder="Postavi pitanje o sportskim događajima, preporukama ili aktivnostima…"
             className="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+            onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
           />
           <button
             className="ml-2 w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center"
@@ -232,12 +295,18 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Bottom Navigation */}
+      {/* Donja navigacija */}
       <div className="bg-white border-t py-4 px-4">
         <div className="flex justify-between items-center max-w-7xl mx-auto">
           <Link href="/" className="flex flex-col items-center">
             <div className="w-6 h-6 text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {/* Home ikona */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -246,11 +315,18 @@ export default function ChatPage() {
                 />
               </svg>
             </div>
-            <span className="text-sm text-gray-400">Home</span>
+            <span className="text-sm text-gray-400">Početna</span>
           </Link>
+
           <Link href="/map" className="flex flex-col items-center">
             <div className="w-6 h-6 text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {/* Map ikona */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -259,11 +335,18 @@ export default function ChatPage() {
                 />
               </svg>
             </div>
-            <span className="text-sm text-gray-400">Map</span>
+            <span className="text-sm text-gray-400">Karta</span>
           </Link>
+
           <Link href="/chat" className="flex flex-col items-center">
             <div className="w-6 h-6 text-emerald-500">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {/* Chat ikona */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -277,5 +360,5 @@ export default function ChatPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -149,7 +149,7 @@ export default function ChatPage() {
               <div
                 className={`max-w-[80%] rounded-lg p-3 ${
                   message.sender === "user"
-                    ? "bg-emerald-500 text-white rounded-br-none"
+                    ? "bg-blue-500 text-white rounded-br-none"
                     : "bg-white shadow-sm rounded-bl-none"
                 }`}
               >
@@ -157,14 +157,14 @@ export default function ChatPage() {
                   <div
                     className={`w-6 h-6 rounded-full flex items-center justify-center mr-2 ${
                       message.sender === "user"
-                        ? "bg-emerald-600"
-                        : "bg-emerald-100"
+                        ? "bg-blue-600"
+                        : "bg-blue-100"
                     }`}
                   >
                     {message.sender === "user" ? (
                       <User className="w-4 h-4 text-white" />
                     ) : (
-                      <div className="text-emerald-600 font-bold text-xs">
+                      <div className="text-blue-600 font-bold text-xs">
                         AI
                       </div>
                     )}
@@ -172,7 +172,7 @@ export default function ChatPage() {
                   <span
                     className={`text-xs ${
                       message.sender === "user"
-                        ? "text-emerald-100"
+                        ? "text-blue-100"
                         : "text-gray-500"
                     }`}
                   >
@@ -233,7 +233,7 @@ export default function ChatPage() {
                           </div>
                           <Link
                             href={`/event/${event.id}`}
-                            className="mt-2 flex items-center text-xs font-medium text-emerald-600"
+                            className="mt-2 flex items-center text-xs font-medium text-blue-600"
                           >
                             <span>Pogledaj detalje</span>
                             <ExternalLink className="w-3 h-3 ml-1" />
@@ -252,8 +252,8 @@ export default function ChatPage() {
             <div className="flex justify-start">
               <div className="max-w-[80%] rounded-lg p-3 bg-white shadow-sm rounded-bl-none">
                 <div className="flex items-center mb-1">
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center mr-2 bg-emerald-100">
-                    <div className="text-emerald-600 font-bold text-xs">AI</div>
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center mr-2 bg-blue-100">
+                    <div className="text-blue-600 font-bold text-xs">AI</div>
                   </div>
                   <span className="text-xs text-gray-500">
                     {new Date().toLocaleTimeString("hr-HR", {
@@ -282,13 +282,13 @@ export default function ChatPage() {
           <input
             type="text"
             placeholder="Postavi pitanje o sportskim događajima, preporukama ili aktivnostima…"
-            className="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
           />
           <button
-            className="ml-2 w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center"
+            className="ml-2 w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center"
             onClick={handleSendMessage}
           >
             <Send className="w-5 h-5" />
@@ -350,7 +350,7 @@ export default function ChatPage() {
             </span>
           </Link>
           <Link href="/chat" className="flex flex-col items-center">
-            <div className="w-6 h-6 text-emerald-500">
+            <div className="w-6 h-6 text-blue-500">
               {/* Chat ikona */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -366,7 +366,7 @@ export default function ChatPage() {
                 />
               </svg>
             </div>
-            <span className="text-sm text-emerald-500">Chat AI</span>
+            <span className="text-sm text-blue -500">Chat AI</span>
           </Link>
         </div>
       </div>

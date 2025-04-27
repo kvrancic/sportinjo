@@ -214,7 +214,7 @@ export default function SportsAroundMe() {
           <img
             src="/samo-kip.png" /* path relative to /public      */
             alt="" /* decorative, so empty alt      */
-            className="w-[420px] md:w-[800px] opacity-15 select-none translate-x-[100px] translate-y-[80px] md:translate-x-[300px]"
+            className="w-[420px] md:w-[800px] w-[800px] opacity-15 select-none translate-x-[100px] translate-y-[80px] md:translate-x-[300px]"
           />
         </div>
         <div className="absolute top-4 right-4 flex items-center gap-3">

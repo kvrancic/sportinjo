@@ -208,7 +208,7 @@ export default function SportsAroundMe() {
 
   return (
     <>
-      <header className="sportinjo-bg w-screen relative overflow-hidden pt-10 pb-28 text-center">
+      <header className="sportinjo-bg w-screen relative overflow-hidden pt-10 pb-16 text-center">
         {/* compact utility bar (notifications - points - avatar) */}
         <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
           <img
@@ -239,12 +239,12 @@ export default function SportsAroundMe() {
         </h1>
 
         {/* tagline & helper */}
-        <p className="text-lg md:text-2xl text-white mb-8 font-[Georgia]">
+        <p className="text-lg md:text-2xl text-white mb-0 font-[Georgia]">
           Tvoje mjesto za zagrebačke sportske aktivnosti
         </p>
       </header>
       {/* Search Container */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 -mt-16 mb-12 z-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 -mt-4 mb-12 z-10">
         <div className="search-container">
           <div className="mb-4">
             <div className="relative">

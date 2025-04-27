@@ -366,7 +366,7 @@ const MapComponent = dynamic(() => import("../components/map-component"), {
   loading: () => (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="text-center">
-        <div className="w-16 h-16 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
         <p className="text-gray-600">Loading map...</p>
       </div>
     </div>
@@ -417,25 +417,25 @@ export default function MapPage() {
           </Link>
           <div className="flex space-x-2">
             <button
-              className={`px-4 py-2 rounded-full text-sm ${timespan === 1 ? "bg-emerald-500 text-white" : "bg-gray-100 text-gray-700"}`}
+              className={`px-4 py-2 rounded-full text-sm ${timespan === 1 ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"}`}
               onClick={() => setTimespan(1)}
             >
               Today
             </button>
             <button
-              className={`px-4 py-2 rounded-full text-sm ${timespan === 3 ? "bg-emerald-500 text-white" : "bg-gray-100 text-gray-700"}`}
+              className={`px-4 py-2 rounded-full text-sm ${timespan === 3 ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"}`}
               onClick={() => setTimespan(3)}
             >
               3 Days
             </button>
             <button
-              className={`px-4 py-2 rounded-full text-sm ${timespan === 7 ? "bg-emerald-500 text-white" : "bg-gray-100 text-gray-700"}`}
+              className={`px-4 py-2 rounded-full text-sm ${timespan === 7 ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"}`}
               onClick={() => setTimespan(7)}
             >
               Week
             </button>
             <button
-              className={`px-4 py-2 rounded-full text-sm ${timespan === 30 ? "bg-emerald-500 text-white" : "bg-gray-100 text-gray-700"}`}
+              className={`px-4 py-2 rounded-full text-sm ${timespan === 30 ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"}`}
               onClick={() => setTimespan(30)}
             >
               Month
@@ -492,8 +492,8 @@ export default function MapPage() {
             <span className="text-sm text-gray-400">Home</span>
           </Link>
           <Link href="/map" className="flex flex-col items-center">
-            <MapIcon className="w-6 h-6 text-emerald-500" />
-            <span className="text-sm text-emerald-500">Map</span>
+            <MapIcon className="w-6 h-6 text-blue-500" />
+            <span className="text-sm text-blue-500">Map</span>
           </Link>
           <Link href="#" className="flex flex-col items-center">
             <MessageSquare className="w-6 h-6 text-gray-400" />
@@ -533,7 +533,7 @@ export default function MapPage() {
                   <span>{selectedEvent.location}</span>
                 </div>
                 <div className="flex items-center">
-                  <span className="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded-full">
+                  <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
                     {selectedEvent.sport}
                   </span>
                 </div>
@@ -543,7 +543,7 @@ export default function MapPage() {
             <div className="flex justify-between">
               <Link
                 href={`/event/${selectedEvent.id}`}
-                className="flex-1 bg-emerald-500 text-white py-2 rounded-lg text-center mr-2"
+                className="flex-1 bg-blue-500 text-white py-2 rounded-lg text-center mr-2"
               >
                 View Details
               </Link>

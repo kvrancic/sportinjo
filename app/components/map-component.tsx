@@ -105,7 +105,7 @@ function MarkerClusterComponent({
       clusterGroupRef.current = L.markerClusterGroup({
         iconCreateFunction(cluster) {
           return L.divIcon({
-            html: `<div class="cluster-icon"> ${cluster.getChildCount()}</div>`,
+            html: `<div class="cluster-icon text-white"> ${cluster.getChildCount()}</div>`,
             className: "custom-marker-cluster",
             iconSize: L.point(50, 50, true),
           })

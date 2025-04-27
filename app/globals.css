@@ -169,7 +169,7 @@ body {
 
 /* Custom styles for map markers and clusters */
 .custom-marker-cluster {
-  background: linear-gradient(to bottom, #10b981, #059669);
+  background: linear-gradient(to bottom, #0066ff, #0052cc);
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
   border: 2px solid rgba(255, 255, 255, 0.8);
   border-radius: 9999px; /* 👈 make it a circle */
@@ -234,7 +234,7 @@ body {
 .event-marker {
   width: 24px;
   height: 24px;
-  background-color: #10b981; /* emerald-500 */
+  background-color: #0052cc; /* emerald-500 */
   border-radius: 50%;
   border: 2px solid white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -260,7 +260,7 @@ body {
   font-size: 24px;
   background-color: white;
   border-radius: 50%;
-  border: 2px solid #10b981;
+  border: 2px solid #0052cc;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }

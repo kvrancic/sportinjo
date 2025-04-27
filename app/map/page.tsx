@@ -26,7 +26,7 @@ const EVENTS = [
     sport: "Football",
     time: "Danas, 18:00",
     location: "Stadion Maksimir",
-    image: "/placeholder.svg?height=120&width=200",
+    image: "/nogomet.png?height=120&width=200",
     favourite: true,
     popular: true,
     coordinates: [45.8196, 16.0185],

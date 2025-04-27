@@ -16,7 +16,7 @@ const eventData = {
           user: "Navijač1",
           message: "Jedva čekam derbi!",
           time: "10:15",
-          avatar: "/placeholder.svg?height=30&width=30",
+          avatar: "/bocanje.png",
         },
         {
           id: 2,

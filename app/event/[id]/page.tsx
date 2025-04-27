@@ -17,7 +17,7 @@ const eventData = {
   round: "Round 28",
   homeTeam: {
     name: "Dinamo Zagreb",
-    logo: "/placeholder.svg?height=60&width=60",
+    logo: "/dinamo.png?height=60&width=60",
     score: null,
     color: "#0b2b80",
     players: [
@@ -45,7 +45,7 @@ const eventData = {
   },
   awayTeam: {
     name: "Hajduk Split",
-    logo: "/placeholder.svg?height=60&width=60",
+    logo: "/hajduk.png?height=60&width=60",
     score: null,
     color: "#ff0000",
     players: [
@@ -196,6 +196,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
   const [activeSection, setActiveSection] = useState("lineups")
   const [message, setMessage] = useState("")
   const [isChatVisible, setIsChatVisible] = useState(false)
+  const [showCommunities, setShowCommunities] = useState(false)
   const [followedClubs, setFollowedClubs] = useState<string[]>([])
   const [hasVoted, setHasVoted] = useState(false)
   const [votePercentages, setVotePercentages] = useState({ home: 40, draw: 25, away: 35 }) // Initial mock percentages
@@ -319,6 +320,12 @@ export default function EventPage({ params }: { params: { id: string } }) {
               <span className="text-sm px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full">
                 {event.status === "Upcoming" ? "Upcoming" : event.status}
               </span>
+                    <Link
+        href={`/event/${event.id}/community`}
+        className="mt-2 text-sm text-blue-600 hover:underline"
+      >
+        Community
+      </Link>
             </div>
 
             <div className="flex flex-col items-center w-2/5">
@@ -406,10 +413,10 @@ export default function EventPage({ params }: { params: { id: string } }) {
           </p>
         )}
       </div>
+      
 
       {/* Content Sections */}
-      <div className={`flex-1 max-w-7xl mx-auto px-4 ${isChatVisible ? "pb-80" : "pb-20"}`}>
-        {/* Section Navigation */}
+      <div className={`flex-1 w-full px-4 sm:px-6 ${isChatVisible ? "pb-80" : "pb-20"} d:px-8 lg:px-16`}>      
         <div className="flex overflow-x-auto mb-4 bg-white rounded-lg shadow-sm">
           <button
             className={`px-4 py-3 text-sm font-medium whitespace-nowrap ${activeSection === "lineups" ? "text-emerald-600 border-b-2 border-emerald-600" : "text-gray-600"}`}
@@ -442,7 +449,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
           <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
             <h3 className="text-lg font-bold mb-4">Starting Lineups</h3>
 
-            <div className="flex flex-col md:flex-row">
+            <div className="flex flex-col md:flex-row gap-4">
               {/* Home Team */}
               <div className="flex-1 mb-6 md:mb-0 md:mr-4">
                 <div className="flex items-center mb-3">
@@ -505,7 +512,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
           <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
             <h3 className="text-lg font-bold mb-4">Match Statistics</h3>
 
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="flex items-center">
                 <div className="w-16 text-right font-bold">{event.homeTeam.stats.possession}%</div>
                 <div className="flex-1 mx-4">
@@ -644,24 +651,40 @@ export default function EventPage({ params }: { params: { id: string } }) {
 
         {/* News Section */}
         {activeSection === "news" && (
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h3 className="text-lg font-bold mb-4">Najnovije vijesti</h3>
+  <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
+    <h3 className="text-lg font-bold mb-4">Najnovije vijesti</h3>
 
-            <div className="space-y-4">
-              {event.news.map((item) => (
-                <div key={item.id} className="border-b pb-4 last:border-0 last:pb-0">
-                  <h4 className="font-bold text-lg mb-1">{item.title}</h4>
-                  <div className="flex items-center text-sm text-gray-500 mb-2">
-                    <span>{item.source}</span>
-                    <span className="mx-2">•</span>
-                    <span>{item.time}</span>
-                  </div>
-                  <p className="text-gray-700">{item.summary}</p>
-                </div>
-              ))}
-            </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {event.news.map((item) => (
+        <div
+          key={item.id}
+          className="bg-white rounded-lg overflow-hidden shadow hover:shadow-md transition-shadow"
+        >
+          {/* Photo */}
+          <div className="relative w-full h-40">
+            <Image
+              src="/placeholder.jpg"
+              alt={item.title}
+              fill
+              className="object-cover"
+            />
           </div>
-        )}
+
+          {/* Content */}
+          <div className="p-4">
+            <h4 className="font-bold text-lg mb-1">{item.title}</h4>
+            <div className="flex items-center text-sm text-gray-500 mb-2">
+              <span>{item.source}</span>
+              <span className="mx-2">•</span>
+              <span>{item.time}</span>
+            </div>
+            <p className="text-gray-700">{item.summary}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
       </div>
 
       {/* Chat Toggle Button */}

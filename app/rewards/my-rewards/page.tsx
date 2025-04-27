@@ -11,7 +11,6 @@ export default function MyRewardsPage() {
   const [qrModalOpen, setQrModalOpen] = useState(false)
 
   useEffect(() => {
-    // Load redeemed rewards from localStorage
     const storedRewards = JSON.parse(localStorage.getItem("myRewards") || "[]")
     setMyRewards(storedRewards)
   }, [])
@@ -28,7 +27,6 @@ export default function MyRewardsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center">
@@ -36,14 +34,13 @@ export default function MyRewardsPage() {
               <ArrowLeft className="w-6 h-6 text-gray-700" />
             </Link>
             <div>
-              <h1 className="text-lg font-bold text-gray-800">My Rewards</h1>
-              <div className="text-sm text-gray-500">View and manage your redeemed rewards</div>
+              <h1 className="text-lg font-bold text-gray-800">Moje nagrade</h1>
+              <div className="text-sm text-gray-500">Pregledajte i upravljajte svojim nagradama</div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Content */}
       <div className="max-w-7xl mx-auto px-4 py-6">
         {myRewards.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -58,25 +55,22 @@ export default function MyRewardsPage() {
                 <div className="p-4">
                   <h3 className="font-bold text-gray-800 mb-1">{reward.title}</h3>
                   <p className="text-sm text-gray-600 mb-3">{reward.description}</p>
-
                   <div className="flex items-center text-sm text-gray-500 mb-2">
                     <Calendar className="w-4 h-4 mr-1" />
-                    <span>Redeemed on {formatDate(reward.redeemedAt)}</span>
+                    <span>Iskorišteno {formatDate(reward.redeemedAt)}</span>
                   </div>
-
                   <div className="flex items-center text-sm text-gray-500 mb-4">
                     <div className="w-4 h-4 mr-1 flex items-center justify-center">
                       <span className="text-xs font-bold">#</span>
                     </div>
-                    <span>Code: {reward.redeemCode}</span>
+                    <span>Kod: {reward.redeemCode}</span>
                   </div>
-
                   <button
                     onClick={() => handleViewQR(reward)}
-                    className="w-full py-2 bg-emerald-500 text-white rounded-lg font-medium flex items-center justify-center"
+                    className="w-full py-2 bg-blue-500 text-white rounded-lg font-medium flex items-center justify-center"
                   >
                     <QrCode className="w-4 h-4 mr-2" />
-                    View QR Code
+                    Pogledaj QR kod
                   </button>
                 </div>
               </div>
@@ -87,24 +81,22 @@ export default function MyRewardsPage() {
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Trophy className="w-8 h-8 text-gray-400" />
             </div>
-            <h3 className="text-lg font-medium text-gray-800 mb-2">No rewards yet</h3>
+            <h3 className="text-lg font-medium text-gray-800 mb-2">Još nema nagrada</h3>
             <p className="text-gray-600 mb-6">
-              You haven't redeemed any rewards yet. Go back to the rewards page to redeem your points for exciting
-              rewards!
+              Još niste iskoristili nijednu nagradu. Vratite se na stranicu nagrada kako biste zamijenili bodove za uzbudljive nagrade!
             </p>
-            <Link href="/rewards" className="py-2 px-4 bg-emerald-500 text-white rounded-lg font-medium">
-              Browse Rewards
+            <Link href="/rewards" className="py-2 px-4 bg-blue-500 text-white rounded-lg font-medium">
+              Pregledaj nagrade
             </Link>
           </div>
         )}
       </div>
 
-      {/* QR Code Modal */}
       {qrModalOpen && selectedReward && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl max-w-md w-full overflow-hidden">
             <div className="p-4 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="font-bold text-gray-800">Reward QR Code</h3>
+              <h3 className="font-bold text-gray-800">QR kod nagrade</h3>
               <button onClick={() => setQrModalOpen(false)} className="rounded-full p-1 hover:bg-gray-100">
                 <X className="w-5 h-5 text-gray-700" />
               </button>
@@ -112,27 +104,23 @@ export default function MyRewardsPage() {
             <div className="p-6 text-center">
               <div className="mb-4">
                 <h4 className="font-medium text-lg text-gray-800 mb-1">{selectedReward.title}</h4>
-                <p className="text-sm text-gray-500">Code: {selectedReward.redeemCode}</p>
+                <p className="text-sm text-gray-500">Kod: {selectedReward.redeemCode}</p>
               </div>
-
               <div className="bg-white p-4 rounded-lg shadow-sm inline-block mb-4">
                 <Image
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${selectedReward.redeemCode}`}
-                  alt="QR Code"
+                  alt="QR kod"
                   width={200}
                   height={200}
                   className="mx-auto"
                 />
               </div>
-
               <p className="text-sm text-gray-600 mb-4">
-                Show this QR code to staff at the venue to redeem your reward.
+                Pokažite ovaj QR kod osoblju na mjestu održavanja kako biste preuzeli svoju nagradu.
               </p>
-
               <div className="bg-yellow-50 p-3 rounded-lg text-left">
                 <p className="text-sm text-yellow-800">
-                  <span className="font-medium">Important:</span> This QR code is unique to your reward. Do not share it
-                  with others.
+                  <span className="font-medium">Važno:</span> Ovaj QR kod jedinstven je za vašu nagradu. Nemojte ga dijeliti s drugima.
                 </p>
               </div>
             </div>

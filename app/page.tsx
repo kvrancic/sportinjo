@@ -331,7 +331,7 @@ export default function SportsAroundMe() {
         <section className="mt-8">
           <div className="flex justify-between items-center mb-2">
             <h2 className="text-2xl font-bold text-gray-800">Hidden Gems</h2>
-            <ChevronRight className="w-6 h-6 text-emerald-500" />
+            <ChevronRight className="w-6 h-6 text-blue-500" />
           </div>
           <div className="flex space-x-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
             {hiddenGemsEvents.map((event) => (
@@ -348,8 +348,8 @@ export default function SportsAroundMe() {
             <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-20">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center py-4">
                 <Link href="/" className="flex flex-col items-center">
-                  <Home className="w-6 h-6 text-emerald-500" />
-                  <span className="text-sm text-emerald-500">Početna</span>
+                  <Home className="w-6 h-6 text-blue-500" />
+                  <span className="text-sm text-blue-500">Početna</span>
                 </Link>
                 <Link href="/map" className="flex flex-col items-center">
                   <Map className="w-6 h-6 text-gray-400" />

@@ -83,8 +83,8 @@ export default function NotificationsPage() {
       <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center py-4">
           <Link href="/" className="flex flex-col items-center">
-            <Home className="w-6 h-6 text-emerald-500" />
-            <span className="text-sm text-emerald-500">Početna</span>
+            <Home className="w-6 h-6 text-gray-400" />
+            <span className="text-sm text-gray-400">Početna</span>
           </Link>
           <Link href="/map" className="flex flex-col items-center">
             <Map className="w-6 h-6 text-gray-400" />
@@ -94,8 +94,8 @@ export default function NotificationsPage() {
             href="/notifications"
             className="flex flex-col items-center relative"
           >
-            <Bell className="w-6 h-6 text-gray-400" />
-            <span className="text-sm text-gray-400">Notifikacije</span>
+            <Bell className="w-6 h-6 text-blue-500" />
+            <span className="text-sm text-blue-500">Notifikacije</span>
             {/* Badge */}
             <span className="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-[10px] leading-none rounded-full flex items-center justify-center text-white">
               4

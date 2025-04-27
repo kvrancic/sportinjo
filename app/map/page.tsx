@@ -3,6 +3,10 @@
 import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { Home, MapIcon, MessageSquare, Calendar, X, Heart, Info } from "lucide-react"
+import {
+  Map,
+  Bell,
+} from "lucide-react";
 import Link from "next/link"
 import Image from "next/image"
 
@@ -485,22 +489,33 @@ export default function MapPage() {
       )}
 
       {/* Bottom Navigation */}
-      <div className="bg-white border-t py-4 px-4 z-10">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
+      <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center py-4">
           <Link href="/" className="flex flex-col items-center">
             <Home className="w-6 h-6 text-gray-400" />
-            <span className="text-sm text-gray-400">Home</span>
+            <span className="text-sm text-gray-400">Početna</span>
           </Link>
           <Link href="/map" className="flex flex-col items-center">
-            <MapIcon className="w-6 h-6 text-blue-500" />
-            <span className="text-sm text-blue-500">Map</span>
+            <Map className="w-6 h-6 text-blue-500" />
+            <span className="text-sm text-blue-500">Karta</span>
           </Link>
-          <Link href="#" className="flex flex-col items-center">
+          <Link
+            href="/notifications"
+            className="flex flex-col items-center relative"
+          >
+            <Bell className="w-6 h-6 text-gray-400" />
+            <span className="text-sm text-gray-400">Notifikacije</span>
+            {/* Badge */}
+            <span className="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-[10px] leading-none rounded-full flex items-center justify-center text-white">
+              4
+            </span>
+          </Link>
+          <Link href="/chat" className="flex flex-col items-center">
             <MessageSquare className="w-6 h-6 text-gray-400" />
             <span className="text-sm text-gray-400">Chat AI</span>
           </Link>
         </div>
-      </div>
+      </footer>
 
       {/* Event Details Bottom Sheet */}
       {selectedEvent && (

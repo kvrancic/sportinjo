@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import {
   Trophy,
   Clock,
@@ -7,12 +8,17 @@ import {
   Flag,
   Info,
   Star,
+  Home,
+  Map,
+  Bell,
+  MessageSquare,
 } from "lucide-react";
 
 export default function NotificationsPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="mx-auto max-w-3xl px-4">
+    <main className="flex flex-col min-h-screen bg-gray-50">
+      {/* Glavni sadržaj */}
+      <div className="flex-grow mx-auto max-w-3xl px-4 pt-8 pb-24">
         <h1 className="text-3xl font-bold mb-6">Obavijesti</h1>
 
         {/* Lista obavijesti */}
@@ -72,7 +78,36 @@ export default function NotificationsPage() {
           />
         </div>
       </div>
-    </div>
+
+      {/* Donja navigacija */}
+      <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center py-4">
+          <Link href="/" className="flex flex-col items-center">
+            <Home className="w-6 h-6 text-emerald-500" />
+            <span className="text-sm text-emerald-500">Početna</span>
+          </Link>
+          <Link href="/map" className="flex flex-col items-center">
+            <Map className="w-6 h-6 text-gray-400" />
+            <span className="text-sm text-gray-400">Karta</span>
+          </Link>
+          <Link
+            href="/notifications"
+            className="flex flex-col items-center relative"
+          >
+            <Bell className="w-6 h-6 text-gray-400" />
+            <span className="text-sm text-gray-400">Notifikacije</span>
+            {/* Badge */}
+            <span className="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-[10px] leading-none rounded-full flex items-center justify-center text-white">
+              4
+            </span>
+          </Link>
+          <Link href="/chat" className="flex flex-col items-center">
+            <MessageSquare className="w-6 h-6 text-gray-400" />
+            <span className="text-sm text-gray-400">Chat AI</span>
+          </Link>
+        </div>
+      </footer>
+    </main>
   );
 }
 

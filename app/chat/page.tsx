@@ -8,6 +8,7 @@ import {
   Calendar,
   MapPin,
   ExternalLink,
+  Bell,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -337,7 +338,17 @@ export default function ChatPage() {
             </div>
             <span className="text-sm text-gray-400">Karta</span>
           </Link>
-
+          <Link
+            href="/notifications"
+            className="flex flex-col items-center relative"
+          >
+            <Bell className="w-6 h-6 text-gray-400" />
+            <span className="text-sm text-gray-400">Notifikacije</span>
+            {/* Badge */}
+            <span className="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-[10px] leading-none rounded-full flex items-center justify-center text-white">
+              4
+            </span>
+          </Link>
           <Link href="/chat" className="flex flex-col items-center">
             <div className="w-6 h-6 text-emerald-500">
               {/* Chat ikona */}

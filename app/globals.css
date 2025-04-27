@@ -11,6 +11,11 @@ body {
   display: none;
 }
 
+.user-location-emoji {
+  @apply text-7xl select-none; /* large emoji, unselectable */
+  line-height: 1;              /* so it doesn’t shift baseline */
+}
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .overflow-x-auto {
   -ms-overflow-style: none; /* IE and Edge */

@@ -56,13 +56,20 @@ const createEventMarker = (sport: string) => {
   })
 }
 
+const userIcon = L.divIcon({
+  html: `<div class="user-location-marker flex flex-col items-center">
+      <span class="emoji text-6xl leading-none">🧍‍♂️</span>
+      <span class="label text-xs mt-1 font-bold">Vi ste ovdje</span>
+    </div>`,
+  className: "",                // we’ll style in CSS
+  iconSize: [128, 128],           // tweak to fit your font-size
+  iconAnchor: [16, 32],         // bottom-center of the emoji
+  popupAnchor: [0, -32],        // place popup just above
+})
+
 /* -------------------------------------------------------------
  * 2.  Static user-location icon (PNG)
  * -----------------------------------------------------------*/
-const userIcon = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
-  iconSize: [38, 38],
-})
 
 /* -------------------------------------------------------------
  * 3.  Keep map centred on user
@@ -111,10 +118,13 @@ function MarkerClusterComponent({
           })
         },
         maxClusterRadius(zoom) {
-          return zoom > 14 ? 10 : zoom > 12 ? 40 : 80
+          if (zoom > 14)  return 5  // at close zoom, only markers within 5px cluster
+          if (zoom > 12)  return 20 // mid zoom: 20px radius
+          return 40                  // far out: 40px radius
         },
+        disableClusteringAtZoom: 14,
+
         spiderfyOnMaxZoom: true,
-        disableClusteringAtZoom: 16,
       })
       map.addLayer(clusterGroupRef.current)
     }

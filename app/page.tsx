@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Search,
@@ -14,12 +14,19 @@ import {
   Bell,
   X,
   Trophy,
-} from "lucide-react"
-import Link from "next/link"
-import { useState, useEffect } from "react"
+} from "lucide-react";
+import Link from "next/link";
+import { useState, useEffect } from "react";
 
 // Mock data for events
-const LOCATIONS = ["All", "Stadion Maksimir", "Dražen Petrović Hall", "Dom sportova", "Jarun", "Bundek"]
+const LOCATIONS = [
+  "All",
+  "Stadion Maksimir",
+  "Dražen Petrović Hall",
+  "Dom sportova",
+  "Jarun",
+  "Bundek",
+];
 
 const EVENTS = [
   {
@@ -121,44 +128,51 @@ const EVENTS = [
     popular: false,
     coordinates: [45.7813, 15.923], // Jarun Lake (slightly different coordinates)
   },
-]
+];
 
 export default function SportsAroundMe() {
-  const [filtersOpen, setFiltersOpen] = useState(false)
-  const [events, setEvents] = useState(EVENTS)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [notifications, setNotifications] = useState(false)
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [events, setEvents] = useState(EVENTS);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [notifications, setNotifications] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (notifications && !event.target.closest(".notifications-container")) {
-        setNotifications(false)
+        setNotifications(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [notifications])
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [notifications]);
 
   // Function to toggle favorite status
   const toggleFavorite = (id) => {
-    setEvents(events.map((event) => (event.id === id ? { ...event, favourite: !event.favourite } : event)))
-  }
+    setEvents(
+      events.map((event) =>
+        event.id === id ? { ...event, favourite: !event.favourite } : event
+      )
+    );
+  };
 
   // Filter events for each section based on current state
-  const nearYouEvents = events.slice(0, 4) // For now, just take the first 4 events
-  const favouriteEvents = events.filter((event) => event.favourite)
-  const hiddenGemsEvents = events.filter((event) => !event.popular)
+  const nearYouEvents = events.slice(0, 4); // For now, just take the first 4 events
+  const favouriteEvents = events.filter((event) => event.favourite);
+  const hiddenGemsEvents = events.filter((event) => !event.popular);
 
   // Event card component to reuse across sections
   const EventCard = ({ event }) => (
-
     <div className="relative min-w-[200px] h-[180px] sm:h-[150px] rounded-lg overflow-hidden">
       <Link href={`/event/${event.id}`} className="absolute inset-0 z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60">
-          <img src={event.image || "/placeholder.svg"} alt={event.title} className="w-full h-full object-cover filter brightness-50" />
+          <img
+            src={event.image || "/placeholder.svg"}
+            alt={event.title}
+            className="w-full h-full object-cover filter brightness-50"
+          />
         </div>
         <div className="absolute bottom-0 left-0 p-3 text-white">
           <h3 className="font-bold text-lg">{event.title}</h3>
@@ -175,56 +189,60 @@ export default function SportsAroundMe() {
       <button
         className="absolute top-3 right-3 bg-white/80 rounded-full p-1.5 hover:bg-white transition-colors z-20"
         onClick={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          toggleFavorite(event.id)
+          e.preventDefault();
+          e.stopPropagation();
+          toggleFavorite(event.id);
         }}
-        aria-label={event.favourite ? "Remove from favorites" : "Add to favorites"}
+        aria-label={
+          event.favourite ? "Remove from favorites" : "Add to favorites"
+        }
       >
-        <Heart className={`w-4 h-4 ${event.favourite ? "fill-red-500 text-red-500" : "text-gray-700"}`} />
+        <Heart
+          className={`w-4 h-4 ${
+            event.favourite ? "fill-red-500 text-red-500" : "text-gray-700"
+          }`}
+        />
       </button>
     </div>
-  )
+  );
 
   return (
     <>
       <header className="sportinjo-bg w-screen relative overflow-hidden pt-10 pb-28 text-center">
-      {/* compact utility bar (notifications - points - avatar) */}
-      <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
-      <img
-        src="/samo-kip.png"         /* path relative to /public      */
-        alt=""                          /* decorative, so empty alt      */
-        className="w-[420px] md:w-[800px] opacity-15 select-none translate-x-[100px] translate-y-[80px] md:translate-x-[300px]"
-      />
-      </div>
-      <div className="absolute top-4 right-4 flex items-center gap-3">
-  
-
-        {/* Points indicator */}
-        <Link
-          href="/rewards"
-          className="flex items-center bg-yellow-100 rounded-full px-2.5 py-1"
-        >
-          <Trophy className="w-3.5 h-3.5 text-yellow-600 mr-1" />
-          <span className="text-xs font-medium text-yellow-800">125</span>
-        </Link>
-
-        {/* Avatar */}
-        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-          <div className="w-5 h-5 rounded-full bg-white"></div>
+        {/* compact utility bar (notifications - points - avatar) */}
+        <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
+          <img
+            src="/samo-kip.png" /* path relative to /public      */
+            alt="" /* decorative, so empty alt      */
+            className="w-[420px] md:w-[800px] opacity-15 select-none translate-x-[100px] translate-y-[80px] md:translate-x-[300px]"
+          />
         </div>
-      </div>
+        <div className="absolute top-4 right-4 flex items-center gap-3">
+          {/* Points indicator */}
+          <Link
+            href="/rewards"
+            className="flex items-center bg-yellow-100 rounded-full px-2.5 py-1"
+          >
+            <Trophy className="w-3.5 h-3.5 text-yellow-600 mr-1" />
+            <span className="text-xs font-medium text-yellow-800">125</span>
+          </Link>
 
-      {/* big centred title */}
-      <h1 className="text-6xl md:text-8xl font-extrabold text-white mb-3 font-[Georgia]">
-        Sportinjo
-      </h1>
+          {/* Avatar */}
+          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+            <div className="w-5 h-5 rounded-full bg-white"></div>
+          </div>
+        </div>
 
-      {/* tagline & helper */}
-      <p className="text-lg md:text-2xl text-white mb-8 font-[Georgia]">
-        Tvoje mjesto za zagrebačke sportske aktivnosti
-      </p>
-    </header>
+        {/* big centred title */}
+        <h1 className="text-6xl md:text-8xl font-extrabold text-white mb-3 font-[Georgia]">
+          Sportinjo
+        </h1>
+
+        {/* tagline & helper */}
+        <p className="text-lg md:text-2xl text-white mb-8 font-[Georgia]">
+          Tvoje mjesto za zagrebačke sportske aktivnosti
+        </p>
+      </header>
       {/* Search Container */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 -mt-16 mb-12 z-10">
         <div className="search-container">
@@ -274,91 +292,89 @@ export default function SportsAroundMe() {
         </div>
       </div>
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6">
-         {/* Near You Section */}
-         <section className="mt-4">
-  <h2 className="text-2xl font-bold text-gray-800 mb-2">Near You</h2>
-  <div
-    className="
+        {/* Near You Section */}
+        <section className="mt-4">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Near You</h2>
+          <div
+            className="
       flex space-x-4
       overflow-x-auto
       pb-2
       scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100
     "
-  >
-    {nearYouEvents.map((event) => (
-      <div key={event.id} className="flex-none">
-        <EventCard event={event} />
-      </div>
-    ))}
-  </div>
-</section>
-
-      {/* Favourites Section */}
-      <section className="mt-8">
-  <h2 className="text-2xl font-bold text-gray-800 mb-2">Favourites</h2>
-  <div className="flex space-x-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-    {favouriteEvents.length > 0
-      ? favouriteEvents.map((event) => (
-          <div key={event.id} className="flex-none">
-            <EventCard event={event} />
+          >
+            {nearYouEvents.map((event) => (
+              <div key={event.id} className="flex-none">
+                <EventCard event={event} />
+              </div>
+            ))}
           </div>
-        ))
-      : <p className="text-gray-500 italic">No favorite events yet.</p>}
-  </div>
-</section>
+        </section>
 
-      {/* Hidden Gems Section */}
-      <section className="mt-8">
-  <div className="flex justify-between items-center mb-2">
-    <h2 className="text-2xl font-bold text-gray-800">Hidden Gems</h2>
-    <ChevronRight className="w-6 h-6 text-emerald-500" />
-  </div>
-  <div className="flex space-x-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-    {hiddenGemsEvents.map((event) => (
-      <div key={event.id} className="flex-none">
-        <EventCard event={event} />
-      </div>
-    ))}
-  </div>
-</section>
-
-      {/* Bottom Navigation */}
-      <div className="mt-auto pt-8 pb-8">
-        <div className="flex justify-between items-center">
-        <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center py-4">
-
-          <Link href="/" className="flex flex-col items-center">
-            <Home className="w-6 h-6 text-emerald-500" />
-            <span className="text-sm text-emerald-500">Home</span>
-          </Link>
-          <Link href="/map" className="flex flex-col items-center">
-            <Map className="w-6 h-6 text-gray-400" />
-            <span className="text-sm text-gray-400">Map</span>
-          </Link>
-          <Link href="/notifications" className="flex flex-col items-center relative">
-            <Bell className="w-6 h-6 text-gray-400" />
-            <span className="text-sm text-gray-400">Alerts</span>
-            {/* badge */}
-            <span className="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-[10px] leading-none rounded-full flex items-center justify-center text-white">
-              4
-            </span>
-          </Link>
-          <Link href="/chat" className="flex flex-col items-center">
-            <MessageSquare className="w-6 h-6 text-gray-400" />
-            <span className="text-sm text-gray-400">Chat AI</span>
-          </Link>
+        {/* Favourites Section */}
+        <section className="mt-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Favourites</h2>
+          <div className="flex space-x-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+            {favouriteEvents.length > 0 ? (
+              favouriteEvents.map((event) => (
+                <div key={event.id} className="flex-none">
+                  <EventCard event={event} />
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 italic">No favorite events yet.</p>
+            )}
           </div>
-          </footer>
+        </section>
+
+        {/* Hidden Gems Section */}
+        <section className="mt-8">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-2xl font-bold text-gray-800">Hidden Gems</h2>
+            <ChevronRight className="w-6 h-6 text-emerald-500" />
+          </div>
+          <div className="flex space-x-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+            {hiddenGemsEvents.map((event) => (
+              <div key={event.id} className="flex-none">
+                <EventCard event={event} />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Bottom Navigation */}
+        <div className="mt-auto pt-8 pb-8">
+          <div className="flex justify-between items-center">
+            <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-20">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center py-4">
+                <Link href="/" className="flex flex-col items-center">
+                  <Home className="w-6 h-6 text-emerald-500" />
+                  <span className="text-sm text-emerald-500">Početna</span>
+                </Link>
+                <Link href="/map" className="flex flex-col items-center">
+                  <Map className="w-6 h-6 text-gray-400" />
+                  <span className="text-sm text-gray-400">Karta</span>
+                </Link>
+                <Link
+                  href="/notifications"
+                  className="flex flex-col items-center relative"
+                >
+                  <Bell className="w-6 h-6 text-gray-400" />
+                  <span className="text-sm text-gray-400">Notifikacije</span>
+                  {/* badge */}
+                  <span className="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-[10px] leading-none rounded-full flex items-center justify-center text-white">
+                    4
+                  </span>
+                </Link>
+                <Link href="/chat" className="flex flex-col items-center">
+                  <MessageSquare className="w-6 h-6 text-gray-400" />
+                  <span className="text-sm text-gray-400">Chat AI</span>
+                </Link>
+              </div>
+            </footer>
+          </div>
         </div>
-      </div>
       </main>
-    </>      
-
-
-    
-
-    
-     
-  )
+    </>
+  );
 }

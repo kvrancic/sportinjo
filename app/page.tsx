@@ -285,7 +285,7 @@ export default function SportsAroundMe() {
           </div>
 
           <div className="mt-4 flex justify-end">
-            <button className="bg-red-500 hover:bg-red-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg">
               <Search className="w-5 h-5" />
             </button>
           </div>

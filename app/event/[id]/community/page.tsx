@@ -49,7 +49,7 @@ const eventData = {
         {
             id: 6,
             user: "Navijač1",
-            message: "ajmo popit cugu u xx kafic nakon tekme",
+            message: "Ekipa svi koji su za cugu u Park Cafe nakon tekme nek lajkaju poruku, vidimo se!",
             time: "11:00",
             avatar: "/placeholder.svg?height=30&width=30",
             likes: 69,
@@ -210,7 +210,7 @@ export default function CommunityPage({
                         absolute top-200 right-10
                         transform translate-x-1/2 -translate-y-1/2
                         bg-gray-200 rounded-full px-2 py-0.5
-                        flex items-center space-x-1 text-white
+                        flex items-center space-x-1 text-black
                       "
                       aria-label={`Like (${likeCounts[chat.id]})`}
                     >

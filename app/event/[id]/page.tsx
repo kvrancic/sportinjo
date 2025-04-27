@@ -365,7 +365,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
         <div className="flex items-center justify-center mb-3">
           <Trophy className="w-4 h-4 text-yellow-500 mr-1" />
           <span className="text-sm text-gray-600">
-            Earn <span className="font-bold text-yellow-600">+15</span> points for correct prediction
+            Earn points for correct prediction
           </span>
         </div>
         <div className="flex w-full gap-1">

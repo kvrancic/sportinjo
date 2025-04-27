@@ -1,22 +1,30 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import dynamic from "next/dynamic"
-import { Home, MapIcon, MessageSquare, Calendar, X, Heart, Info } from "lucide-react"
+import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import {
-  Map,
+  Home,
+  MapIcon,
+  MessageSquare,
+  Calendar,
+  X,
+  Heart,
+  Info,
   Bell,
+  Map,
 } from "lucide-react";
-import Link from "next/link"
-import Image from "next/image"
+import Link from "next/link";
+import Image from "next/image";
 
-// Mock data for events with real Zagreb coordinates
+/* ------------------------------------------------------------------ */
+/*   MOCK PODACI – NASLOVI I LOKACIJE NA HRVATSKOM                    */
+/* ------------------------------------------------------------------ */
 const EVENTS = [
   {
     id: 1,
     title: "Dinamo vs Hajduk",
     sport: "Football",
-    time: "Today, 18:00",
+    time: "Danas, 18:00",
     location: "Stadion Maksimir",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
@@ -27,8 +35,8 @@ const EVENTS = [
     id: 2,
     title: "Cibona vs Cedevita",
     sport: "Basketball",
-    time: "Sat, Apr 22",
-    location: "Dražen Petrović Hall",
+    time: "Sub, 22. 4.",
+    location: "Košarkaški centar Dražen Petrović",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: true,
@@ -38,19 +46,19 @@ const EVENTS = [
     id: 3,
     title: "Mladost vs HAVK Mladost",
     sport: "Water Polo",
-    time: "Sun, Apr 23",
+    time: "Ned, 23. 4.",
     location: "Jarun",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: true,
-    coordinates: [45.7928145,15.9759383],
+    coordinates: [45.7928145, 15.9759383],
   },
   {
     id: 4,
-    title: "Zagreb Open",
+    title: "Zagrebački Open",
     sport: "Tennis",
-    time: "Mon, Apr 24",
-    location: "Jarun",
+    time: "Pon, 24. 4.",
+    location: "Teniski centar Jarun",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: true,
@@ -60,7 +68,7 @@ const EVENTS = [
     id: 5,
     title: "Medveščak vs KHL Sisak",
     sport: "Ice Hockey",
-    time: "Tue, Apr 25",
+    time: "Uto, 25. 4.",
     location: "Dom sportova",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -69,9 +77,9 @@ const EVENTS = [
   },
   {
     id: 6,
-    title: "Zagreb Marathon",
+    title: "Zagrebački maraton",
     sport: "Running",
-    time: "Wed, Apr 26",
+    time: "Sri, 26. 4.",
     location: "Bundek",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -80,9 +88,9 @@ const EVENTS = [
   },
   {
     id: 7,
-    title: "Fencing Tournament",
+    title: "Mačevalački turnir",
     sport: "Fencing",
-    time: "Thu, Apr 27",
+    time: "Čet, 27. 4.",
     location: "Dom sportova",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -91,9 +99,9 @@ const EVENTS = [
   },
   {
     id: 8,
-    title: "Ultimate Frisbee Cup",
+    title: "Kup Ultimate Frisbee",
     sport: "Ultimate Frisbee",
-    time: "Fri, Apr 28",
+    time: "Pet, 28. 4.",
     location: "Bundek",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -102,9 +110,9 @@ const EVENTS = [
   },
   {
     id: 9,
-    title: "Pétanque Championship",
+    title: "Prvenstvo u petanki",
     sport: "Pétanque",
-    time: "Sat, Apr 29",
+    time: "Sub, 29. 4.",
     location: "Jarun",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -113,10 +121,10 @@ const EVENTS = [
   },
   {
     id: 10,
-    title: "Beach Volleyball Masters",
+    title: "Masters u odbojci na pijesku",
     sport: "Volleyball",
-    time: "Sun, Apr 30",
-    location: "Jarun Beach",
+    time: "Ned, 30. 4.",
+    location: "Plaža Jarun",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: true,
@@ -124,10 +132,10 @@ const EVENTS = [
   },
   {
     id: 11,
-    title: "National Swimming Cup",
+    title: "Nacionalni plivački kup",
     sport: "Swimming",
-    time: "Mon, May 1",
-    location: "Mladost Swimming Pool",
+    time: "Pon, 1. 5.",
+    location: "Bazen Mladost",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: true,
@@ -135,10 +143,10 @@ const EVENTS = [
   },
   {
     id: 12,
-    title: "Zagreb Cycling Race",
+    title: "Zagrebačka biciklistička utrka",
     sport: "Cycling",
-    time: "Tue, May 2",
-    location: "City Center",
+    time: "Uto, 2. 5.",
+    location: "Centar grada",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: true,
@@ -146,9 +154,9 @@ const EVENTS = [
   },
   {
     id: 13,
-    title: "Handball Derby: PPD Zagreb vs Nexe",
+    title: "Rukometni derbi: PPD Zagreb vs Nexe",
     sport: "Handball",
-    time: "Wed, May 3",
+    time: "Sri, 3. 5.",
     location: "Arena Zagreb",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
@@ -157,9 +165,9 @@ const EVENTS = [
   },
   {
     id: 14,
-    title: "Croatia Boxing Championship",
+    title: "Prvenstvo Hrvatske u boksu",
     sport: "Boxing",
-    time: "Thu, May 4",
+    time: "Čet, 4. 5.",
     location: "Dom sportova",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -168,32 +176,32 @@ const EVENTS = [
   },
   {
     id: 15,
-    title: "Table Tennis Open",
+    title: "Otvoreno prvenstvo u stolnom tenisu",
     sport: "Table Tennis",
-    time: "Fri, May 5",
+    time: "Pet, 5. 5.",
     location: "Dom sportova",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: false,
-    coordinates: [45.7782226,15.962731],
+    coordinates: [45.7782226, 15.962731],
   },
   {
     id: 16,
-    title: "Badminton Championship",
+    title: "Prvenstvo u badmintonu",
     sport: "Badminton",
-    time: "Sat, May 6",
+    time: "Sub, 6. 5.",
     location: "Dom sportova",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: true,
-    coordinates: [45.7782226,15.962731],
+    coordinates: [45.7782226, 15.962731],
   },
   {
     id: 17,
-    title: "Croatia Golf Open",
+    title: "Hrvatski Golf Open",
     sport: "Golf",
-    time: "Sun, May 7",
-    location: "Golf Club Zagreb",
+    time: "Ned, 7. 5.",
+    location: "Golf klub Zagreb",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: false,
@@ -201,9 +209,9 @@ const EVENTS = [
   },
   {
     id: 18,
-    title: "Ski Cup Sljeme",
+    title: "Ski kup Sljeme",
     sport: "Skiing",
-    time: "Mon, May 8",
+    time: "Pon, 8. 5.",
     location: "Sljeme",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
@@ -212,10 +220,10 @@ const EVENTS = [
   },
   {
     id: 19,
-    title: "Rowing Regatta",
+    title: "Veslačka regata",
     sport: "Rowing",
-    time: "Tue, May 9",
-    location: "Jarun Lake",
+    time: "Uto, 9. 5.",
+    location: "Jezero Jarun",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: false,
@@ -223,9 +231,9 @@ const EVENTS = [
   },
   {
     id: 20,
-    title: "Gymnastics Gala",
+    title: "Gimnastička gala",
     sport: "Gymnastics",
-    time: "Wed, May 10",
+    time: "Sri, 10. 5.",
     location: "Arena Zagreb",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -234,10 +242,10 @@ const EVENTS = [
   },
   {
     id: 21,
-    title: "Outdoor Yoga Festival",
+    title: "Festival joge na otvorenom",
     sport: "Yoga",
-    time: "Thu, May 11",
-    location: "Bundek Park",
+    time: "Čet, 11. 5.",
+    location: "Park Bundek",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: true,
@@ -245,10 +253,10 @@ const EVENTS = [
   },
   {
     id: 22,
-    title: "Climbing Competition",
+    title: "Natjecanje u penjanju",
     sport: "Climbing",
-    time: "Fri, May 12",
-    location: "Fothia Climbing Center",
+    time: "Pet, 12. 5.",
+    location: "Penjački centar Fothia",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: false,
@@ -256,10 +264,10 @@ const EVENTS = [
   },
   {
     id: 23,
-    title: "City Bowling Tournament",
+    title: "Gradski turnir u kuglanju",
     sport: "Bowling",
-    time: "Sat, May 13",
-    location: "Bowling Center Zagreb",
+    time: "Sub, 13. 5.",
+    location: "Bowling centar Zagreb",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: true,
@@ -267,10 +275,10 @@ const EVENTS = [
   },
   {
     id: 24,
-    title: "Surfing Challenge",
+    title: "Surf izazov",
     sport: "Surfing",
-    time: "Sun, May 14",
-    location: "Zagreb Surf Center",
+    time: "Ned, 14. 5.",
+    location: "Surf centar Zagreb",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: false,
@@ -278,32 +286,32 @@ const EVENTS = [
   },
   {
     id: 25,
-    title: "Karate Championship",
+    title: "Prvenstvo u karateu",
     sport: "Karate",
-    time: "Mon, May 15",
+    time: "Pon, 15. 5.",
     location: "Dom sportova",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: false,
-    coordinates: [45.782005,15.9823866],
+    coordinates: [45.782005, 15.9823866],
   },
   {
     id: 26,
-    title: "Judo Masters",
+    title: "Judo masters",
     sport: "Judo",
-    time: "Tue, May 16",
+    time: "Uto, 16. 5.",
     location: "Dom sportova",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: true,
-    coordinates: [45.7782226,15.962731],
+    coordinates: [45.7782226, 15.962731],
   },
   {
     id: 27,
-    title: "Archery Cup",
+    title: "Streličarski kup",
     sport: "Archery",
-    time: "Wed, May 17",
-    location: "Zagreb Archery Range",
+    time: "Sri, 17. 5.",
+    location: "Streličarski teren Zagreb",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: true,
@@ -311,10 +319,10 @@ const EVENTS = [
   },
   {
     id: 28,
-    title: "Sailing Regatta",
+    title: "Jedriličarska regata",
     sport: "Sailing",
-    time: "Thu, May 18",
-    location: "Jarun Lake",
+    time: "Čet, 18. 5.",
+    location: "Jezero Jarun",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: true,
@@ -322,10 +330,10 @@ const EVENTS = [
   },
   {
     id: 29,
-    title: "Rugby Clash",
+    title: "Ragbi obračun",
     sport: "Rugby",
-    time: "Fri, May 19",
-    location: "Rugby Club Zagreb",
+    time: "Pet, 19. 5.",
+    location: "Ragbi klub Zagreb",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: false,
@@ -333,10 +341,10 @@ const EVENTS = [
   },
   {
     id: 30,
-    title: "Baseball Exhibition Game",
+    title: "Egzibicijska bejzbol utakmica",
     sport: "Baseball",
-    time: "Sat, May 20",
-    location: "Jarun Baseball Field",
+    time: "Sub, 20. 5.",
+    location: "Bejzbol teren Jarun",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: false,
@@ -346,7 +354,7 @@ const EVENTS = [
     id: 31,
     title: "Dinamo II vs Sesvete",
     sport: "Football",
-    time: "Sun, May 21",
+    time: "Ned, 21. 5.",
     location: "Stadion Hitrec-Kacian",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
@@ -357,7 +365,7 @@ const EVENTS = [
     id: 32,
     title: "Zrinjevac vs Bosco",
     sport: "Basketball",
-    time: "Mon, May 22",
+    time: "Pon, 22. 5.",
     location: "Boćarski dom",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -366,21 +374,21 @@ const EVENTS = [
   },
   {
     id: 33,
-    title: "Mladost Water Polo Tournament",
+    title: "Vaterpolo turnir Mladost",
     sport: "Water Polo",
-    time: "Tue, May 23",
-    location: "Swimming Pool Mladost",
+    time: "Uto, 23. 5.",
+    location: "Bazen Mladost",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: true,
-    coordinates: [45.7879221,15.9755716],
+    coordinates: [45.7879221, 15.9755716],
   },
   {
     id: 34,
     title: "ATP Challenger Zagreb",
     sport: "Tennis",
-    time: "Wed, May 24",
-    location: "Tenis Centar Maksimir",
+    time: "Sri, 24. 5.",
+    location: "Teniski centar Maksimir",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: true,
@@ -388,10 +396,10 @@ const EVENTS = [
   },
   {
     id: 35,
-    title: "KHL Medveščak Juniors",
+    title: "Medveščak juniori",
     sport: "Ice Hockey",
-    time: "Thu, May 25",
-    location: "Velesajam Ice Hall",
+    time: "Čet, 25. 5.",
+    location: "Ledena dvorana Velesajam",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: false,
@@ -399,10 +407,10 @@ const EVENTS = [
   },
   {
     id: 36,
-    title: "Bundek Charity Run",
+    title: "Humanitarna utrka Bundek",
     sport: "Running",
-    time: "Fri, May 26",
-    location: "Bundek Park",
+    time: "Pet, 26. 5.",
+    location: "Park Bundek",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: true,
@@ -410,9 +418,9 @@ const EVENTS = [
   },
   {
     id: 37,
-    title: "Fencing Masters Cup",
+    title: "Mačevalački masters kup",
     sport: "Fencing",
-    time: "Sat, May 27",
+    time: "Sub, 27. 5.",
     location: "ŠRC Šalata",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -421,9 +429,9 @@ const EVENTS = [
   },
   {
     id: 38,
-    title: "Zagreb Ultimate Showdown",
+    title: "Ultimate Frisbee spektakl Zagreb",
     sport: "Ultimate Frisbee",
-    time: "Sun, May 28",
+    time: "Ned, 28. 5.",
     location: "Park Maksimir",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -432,10 +440,10 @@ const EVENTS = [
   },
   {
     id: 39,
-    title: "Pétanque Summer Cup",
+    title: "Ljetni kup u petanki",
     sport: "Pétanque",
-    time: "Mon, May 29",
-    location: "Savica Park",
+    time: "Pon, 29. 5.",
+    location: "Park Savica",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: false,
@@ -443,10 +451,10 @@ const EVENTS = [
   },
   {
     id: 40,
-    title: "Jarun Beach Volleyball",
+    title: "Jarun odbojka na pijesku",
     sport: "Volleyball",
-    time: "Tue, May 30",
-    location: "Jarun Beach",
+    time: "Uto, 30. 5.",
+    location: "Plaža Jarun",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: true,
@@ -454,10 +462,10 @@ const EVENTS = [
   },
   {
     id: 41,
-    title: "Open Swimming Challenge",
+    title: "Otvoreni plivački izazov",
     sport: "Swimming",
-    time: "Wed, May 31",
-    location: "Jarun Lake",
+    time: "Sri, 31. 5.",
+    location: "Jezero Jarun",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: true,
@@ -465,10 +473,10 @@ const EVENTS = [
   },
   {
     id: 42,
-    title: "Zagreb Downtown Ride",
+    title: "Biciklistička vožnja centrom",
     sport: "Cycling",
-    time: "Thu, Jun 1",
-    location: "King Tomislav Square",
+    time: "Čet, 1. 6.",
+    location: "Trg kralja Tomislava",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: true,
@@ -476,9 +484,9 @@ const EVENTS = [
   },
   {
     id: 43,
-    title: "Handball Rising Stars",
+    title: "Rukometne nade",
     sport: "Handball",
-    time: "Fri, Jun 2",
+    time: "Pet, 2. 6.",
     location: "Kutija šibica",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
@@ -487,21 +495,21 @@ const EVENTS = [
   },
   {
     id: 44,
-    title: "Boxing Night at Dom Sportova",
+    title: "Boksačka noć u Domu sportova",
     sport: "Boxing",
-    time: "Sat, Jun 3",
+    time: "Sub, 3. 6.",
     location: "Dom sportova",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
     popular: false,
-    coordinates: [45.7782226,15.962731,],
+    coordinates: [45.7782226, 15.962731],
   },
   {
     id: 45,
-    title: "Table Tennis Masters",
+    title: "Masters u stolnom tenisu",
     sport: "Table Tennis",
-    time: "Sun, Jun 4",
-    location: "Svetice Sports Center",
+    time: "Ned, 4. 6.",
+    location: "Sportski centar Svetice",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: true,
@@ -509,9 +517,9 @@ const EVENTS = [
   },
   {
     id: 46,
-    title: "Badminton Regional Cup",
+    title: "Regionalni kup u badmintonu",
     sport: "Badminton",
-    time: "Mon, Jun 5",
+    time: "Pon, 5. 6.",
     location: "Dom sportova",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -520,10 +528,10 @@ const EVENTS = [
   },
   {
     id: 47,
-    title: "Golf Challenge Day",
+    title: "Dan golf izazova",
     sport: "Golf",
-    time: "Tue, Jun 6",
-    location: "Golf Club Riverside",
+    time: "Uto, 6. 6.",
+    location: "Golf klub Riverside",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: false,
@@ -531,9 +539,9 @@ const EVENTS = [
   },
   {
     id: 48,
-    title: "Sljeme Ski Festival",
+    title: "Skijaški festival Sljeme",
     sport: "Skiing",
-    time: "Wed, Jun 7",
+    time: "Sri, 7. 6.",
     location: "Sljeme",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -542,10 +550,10 @@ const EVENTS = [
   },
   {
     id: 49,
-    title: "University Rowing Cup",
+    title: "Sveučilišni veslački kup",
     sport: "Rowing",
-    time: "Thu, Jun 8",
-    location: "Jarun Lake",
+    time: "Čet, 8. 6.",
+    location: "Jezero Jarun",
     image: "/placeholder.svg?height=120&width=200",
     favourite: true,
     popular: false,
@@ -553,9 +561,9 @@ const EVENTS = [
   },
   {
     id: 50,
-    title: "Zagreb Gymnastics Open",
+    title: "Zagrebački gimnastički open",
     sport: "Gymnastics",
-    time: "Fri, Jun 9",
+    time: "Pet, 9. 6.",
     location: "Arena Zagreb",
     image: "/placeholder.svg?height=120&width=200",
     favourite: false,
@@ -564,8 +572,9 @@ const EVENTS = [
   },
 ];
 
-
-// Sport icon mapping for the legend
+/* ------------------------------------------------------------------ */
+/*   IKONE SPORTOVA ZA LEGENDU                                        */
+/* ------------------------------------------------------------------ */
 const SPORT_ICONS = {
   Football: "https://cdn-icons-png.flaticon.com/512/1165/1165187.png",
   Basketball: "https://cdn-icons-png.flaticon.com/512/33/33736.png",
@@ -576,130 +585,121 @@ const SPORT_ICONS = {
   Fencing: "https://cdn-icons-png.flaticon.com/512/2151/2151386.png",
   "Ultimate Frisbee": "https://cdn-icons-png.flaticon.com/512/2151/2151445.png",
   Pétanque: "https://cdn-icons-png.flaticon.com/512/2151/2151457.png",
-}
+};
 
-// Get unique sports from events
+/* ------------------------------------------------------------------ */
+/*   POMOĆNE FUNKCIJE                                                 */
+/* ------------------------------------------------------------------ */
 const getUniqueSports = () => {
-  const sportsSet = new Set(EVENTS.map((event) => event.sport))
-  return Array.from(sportsSet)
-}
+  const s = new Set(EVENTS.map((e) => e.sport));
+  return Array.from(s);
+};
 
-// Dynamically import the Map component to avoid SSR issues with Leaflet
+/* ------------------------------------------------------------------ */
+/*   DINAMIČNI IMPORT MAPE                                            */
+/* ------------------------------------------------------------------ */
 const MapComponent = dynamic(() => import("../components/map-component"), {
   ssr: false,
   loading: () => (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="text-center">
         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-600">Loading map...</p>
+        <p className="text-gray-600">Učitavanje karte…</p>
       </div>
     </div>
   ),
-})
+});
 
+/* ------------------------------------------------------------------ */
+/*   KOMPONENTA STRANICE                                              */
+/* ------------------------------------------------------------------ */
 export default function MapPage() {
-  const [selectedEvent, setSelectedEvent] = useState(null)
-  const [timespan, setTimespan] = useState(7) // Default 7 days
-  const [userLocation] = useState([45.7786272, 15.9719775]) // Default Zagreb coordinates
-  const [showLegend, setShowLegend] = useState(false)
-  const [uniqueSports] = useState(getUniqueSports())
-  const [mapKey, setMapKey] = useState(Date.now()) // Key to force re-render
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [timespan, setTimespan] = useState(7);
+  const [userLocation] = useState([45.7786272, 15.9719775]);
+  const [showLegend, setShowLegend] = useState(false);
+  const [uniqueSports] = useState(getUniqueSports());
+  const [mapKey, setMapKey] = useState(Date.now());
 
-  // Force re-render of map component when navigating to this page
-  useEffect(() => {
-    setMapKey(Date.now())
-  }, [])
+  useEffect(() => setMapKey(Date.now()), []);
 
-  // Filter events based on timespan
-  const filteredEvents = EVENTS.filter(() => {
-    // For demo purposes, we'll just show all events
-    // In a real app, you would filter based on event date and selected timespan
-    return true
-  })
-
-  const handleMarkerClick = (event) => {
-    setSelectedEvent(event)
-  }
-
-  const closeEventDetails = () => {
-    setSelectedEvent(null)
-  }
-
-  // Toggle favorite status
-  const toggleFavorite = (id) => {
-    // In a real app, this would update state and possibly a database
-    console.log("Toggle favorite for event:", id)
-  }
+  const filteredEvents = EVENTS; // demo
 
   return (
     <div className="h-screen w-screen flex flex-col">
-      {/* Time filter */}
+      {/* FILTER */}
       <div className="absolute top-0 left-0 right-0 z-10 bg-white shadow-md p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="text-gray-700">
             <X className="w-6 h-6" />
           </Link>
+
+          {/* Gumbe za period */}
           <div className="flex space-x-2">
-            <button
-              className={`px-4 py-2 rounded-full text-sm ${timespan === 1 ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"}`}
-              onClick={() => setTimespan(1)}
-            >
-              Today
-            </button>
-            <button
-              className={`px-4 py-2 rounded-full text-sm ${timespan === 3 ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"}`}
-              onClick={() => setTimespan(3)}
-            >
-              3 Days
-            </button>
-            <button
-              className={`px-4 py-2 rounded-full text-sm ${timespan === 7 ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"}`}
-              onClick={() => setTimespan(7)}
-            >
-              Week
-            </button>
-            <button
-              className={`px-4 py-2 rounded-full text-sm ${timespan === 30 ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700"}`}
-              onClick={() => setTimespan(30)}
-            >
-              Month
-            </button>
+            {[
+              { label: "Danas", val: 1 },
+              { label: "3 dana", val: 3 },
+              { label: "Tjedan", val: 7 },
+              { label: "Mjesec", val: 30 },
+            ].map((b) => (
+              <button
+                key={b.val}
+                className={`px-4 py-2 rounded-full text-sm ${
+                  timespan === b.val
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-100 text-gray-700"
+                }`}
+                onClick={() => setTimespan(b.val)}
+              >
+                {b.label}
+              </button>
+            ))}
           </div>
+
+          {/* Legenda */}
           <button
             className="w-6 h-6 flex items-center justify-center text-gray-700"
             onClick={() => setShowLegend(!showLegend)}
-            aria-label="Toggle legend"
+            aria-label="Prikaži legendu"
           >
             <Info className="w-5 h-5" />
           </button>
         </div>
       </div>
 
-      {/* Map */}
+      {/* MAPA */}
       <div className="flex-1 z-0">
         <MapComponent
           key={mapKey}
           userLocation={userLocation}
           events={filteredEvents}
-          onMarkerClick={handleMarkerClick}
+          onMarkerClick={setSelectedEvent}
         />
       </div>
 
-      {/* Legend for sport icons */}
+      {/* LEGENDA */}
       {showLegend && (
         <div className="absolute bottom-20 left-4 z-10 bg-white p-3 rounded-lg shadow-md max-h-48 overflow-y-auto w-48">
           <div className="flex justify-between items-center mb-2">
-            <div className="text-sm font-semibold">Sport Types</div>
-            <button onClick={() => setShowLegend(false)} className="text-gray-500 hover:text-gray-700">
+            <div className="text-sm font-semibold">Vrste sportova</div>
+            <button
+              onClick={() => setShowLegend(false)}
+              className="text-gray-500 hover:text-gray-700"
+            >
               <X className="w-4 h-4" />
             </button>
           </div>
+
           <div className="grid grid-cols-1 gap-2">
             {uniqueSports.map((sport) => (
               <div key={sport} className="flex items-center">
                 <div
                   className="w-6 h-6 mr-2 bg-contain bg-center bg-no-repeat"
-                  style={{ backgroundImage: `url(${SPORT_ICONS[sport] || SPORT_ICONS.default})` }}
+                  style={{
+                    backgroundImage: `url(${
+                      SPORT_ICONS[sport] || SPORT_ICONS.default
+                    })`,
+                  }}
                 ></div>
                 <span className="text-xs">{sport}</span>
               </div>
@@ -708,7 +708,7 @@ export default function MapPage() {
         </div>
       )}
 
-      {/* Bottom Navigation */}
+      {/* DONJA NAVIGACIJA */}
       <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center py-4">
           <Link href="/" className="flex flex-col items-center">
@@ -724,9 +724,8 @@ export default function MapPage() {
             className="flex flex-col items-center relative"
           >
             <Bell className="w-6 h-6 text-gray-400" />
-            <span className="text-sm text-gray-400">Notifikacije</span>
-            {/* Badge */}
-            <span className="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-[10px] leading-none rounded-full flex items-center justify-center text-white">
+            <span className="text-sm text-gray-400">Obavijesti</span>
+            <span className="absolute -top-1 -right-2 w-4 h-4 bg-red-500 text-[10px] rounded-full flex items-center justify-center text-white">
               4
             </span>
           </Link>
@@ -737,13 +736,13 @@ export default function MapPage() {
         </div>
       </footer>
 
-      {/* Event Details Bottom Sheet */}
+      {/* DETALJI DOGAĐAJA */}
       {selectedEvent && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-xl shadow-lg z-20 transition-transform duration-300 ease-in-out">
+        <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-xl shadow-lg z-20">
           <div className="p-4">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-xl font-bold">{selectedEvent.title}</h2>
-              <button onClick={closeEventDetails} className="p-1">
+              <button onClick={() => setSelectedEvent(null)} className="p-1">
                 <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
@@ -780,14 +779,18 @@ export default function MapPage() {
                 href={`/event/${selectedEvent.id}`}
                 className="flex-1 bg-blue-500 text-white py-2 rounded-lg text-center mr-2"
               >
-                View Details
+                Detalji
               </Link>
               <button
                 className="w-12 h-10 bg-gray-100 rounded-lg flex items-center justify-center"
                 onClick={() => toggleFavorite(selectedEvent.id)}
               >
                 <Heart
-                  className={`w-5 h-5 ${selectedEvent.favourite ? "fill-red-500 text-red-500" : "text-gray-700"}`}
+                  className={`w-5 h-5 ${
+                    selectedEvent.favourite
+                      ? "fill-red-500 text-red-500"
+                      : "text-gray-700"
+                  }`}
                 />
               </button>
             </div>
@@ -795,5 +798,5 @@ export default function MapPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

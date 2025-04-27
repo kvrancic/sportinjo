@@ -81,27 +81,30 @@ const eventData = {
   news: [
     {
       id: 1,
-      title: "Dinamo spreman za veliki derbi protiv Hajduka",
+      title: "Dinamo i Hajduk pred derbijem: 17 igrača pod prijetnjom suspenzije",
       source: "Sportske Novosti",
       time: "2 hours ago",
+      image: "/news1.png",
       summary:
-        "Trener Dinama najavio je kako je momčad spremna za veliki derbi protiv Hajduka koji se igra danas na Maksimiru.",
+        "Uoči nadolazećeg derbija između Dinama i Hajduka, obje momčadi suočavaju se s potencijalnim izostancima ključnih igrača zbog akumuliranih žutih kartona.",
     },
     {
       id: 2,
-      title: "Perišić: 'Vjerujem u pobjedu Hajduka'",
+      title: "Ulaznice za derbi Hajduk – Dinamo puštene u prodaju",
       source: "24sata",
       time: "4 hours ago",
+      image: "/news2.png",
       summary:
-        "Ivan Perišić, povratnik u Hajduk, vjeruje kako njegova momčad može do pobjede na gostovanju kod Dinama.",
+        "Hajduk je objavio detalje o prodaji ulaznica za nadolazeći derbi protiv Dinama koji će se održati na Poljudu.",
     },
     {
       id: 3,
-      title: "Veliki interes za derbi, ulaznice rasprodane",
+      title: "Hajduk u napadačkoj krizi: Samo jedan gol iz igre u šest utakmica",
       source: "Večernji list",
       time: "Yesterday",
+      image: "/news3.png",
       summary:
-        "Sve ulaznice za derbi između Dinama i Hajduka su rasprodane, očekuje se odlična atmosfera na Maksimiru.",
+        "Unatoč borbi za naslov, Hajduk se suočava s ozbiljnim problemima u napadu.",
     },
   ],
   chats: {
@@ -665,7 +668,7 @@ export default function EventPage({ params }: { params: { id: string } }) {
           {/* Photo */}
           <div className="relative w-full h-40">
             <Image
-              src="/placeholder.jpg"
+              src={item.image}
               alt={item.title}
               fill
               className="object-cover"

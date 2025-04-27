@@ -15,7 +15,7 @@ import Image from "next/image";
 
 // Predodređeni odgovori na pitanja
 const predefinedResponses: Record<string, any> = {
-  "Bok! Tražim ideje za vikend aktivnosti s obitelji u Zagrebu. Imaš li kakav prijedlog?":
+  "Bok! Tražim ideje za provesti ovaj vikend s obitelji u Zagrebu ili bližoj okolici. Imaš li kakav prijedlog?":
     {
       text: "Pozdrav! Evo nekoliko obiteljskih sportskih događaja u Zagrebu ovog vikenda:",
       events: [
@@ -40,7 +40,7 @@ const predefinedResponses: Record<string, any> = {
         },
       ],
     },
-  "Kup u frizbiju zvuči zanimljivo! Je li prikladna za djecu?": {
+  "Kup u frizbiju zvuči zanimljivo! Je li prikladan za djecu?": {
     text: "Da! Bit će zone za početnike i djecu uz instruktore i svu potrebnu opremu, a u parku vas čekaju i štandovi s hranom te druge aktivnosti. Odlična, opuštena atmosfera za klince!",
   },
 };

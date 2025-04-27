@@ -320,12 +320,14 @@ export default function EventPage({ params }: { params: { id: string } }) {
               <span className="text-sm px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full">
                 {event.status === "Upcoming" ? "Upcoming" : event.status}
               </span>
-                    <Link
-        href={`/event/${event.id}/community`}
-        className="mt-2 text-sm text-blue-600 hover:underline"
-      >
-        Community
-      </Link>
+                    {/* Community link with icon */}
+            <Link
+              href={`/event/${event.id}/community`}
+              className="mt-2 inline-flex items-center gap-1 bg-[#0052cc]/10 text-[#0052cc] hover:bg-[#0052cc]/20 px-3 py-1 rounded-full transition"
+            >
+              <Users className="w-4 h-4" />
+              <span className="text-sm font-medium">Community</span>
+            </Link>
             </div>
 
             <div className="flex flex-col items-center w-2/5">
@@ -686,91 +688,6 @@ export default function EventPage({ params }: { params: { id: string } }) {
   </div>
 )}
       </div>
-
-      {/* Chat Toggle Button */}
-      <div className="fixed bottom-4 right-4 z-30">
-        <button
-          className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-colors ${
-            isChatVisible ? "bg-red-500" : "bg-emerald-500"
-          }`}
-          onClick={() => setIsChatVisible(!isChatVisible)}
-        >
-          {isChatVisible ? <X className="w-6 h-6 text-white" /> : <MessageCircle className="w-6 h-6 text-white" />}
-        </button>
-      </div>
-
-      {/* Bottom Chat Panel - Collapsible */}
-      {isChatVisible && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-20 transition-all duration-300 ease-in-out">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex border-b">
-              <button
-                className={`flex-1 py-3 text-sm font-medium ${activeTab === "match" ? "text-emerald-600 border-b-2 border-emerald-600" : "text-gray-600"}`}
-                onClick={() => setActiveTab("match")}
-              >
-                <div className="flex items-center justify-center">
-                  <MessageCircle className="w-5 h-5 mr-1" />
-                  <span>Match Chat</span>
-                </div>
-              </button>
-              <button
-                className={`flex-1 py-3 text-sm font-medium ${activeTab === "homeTeam" ? "text-emerald-600 border-b-2 border-emerald-600" : "text-gray-600"}`}
-                onClick={() => setActiveTab("homeTeam")}
-              >
-                <div className="flex items-center justify-center">
-                  <Users className="w-5 h-5 mr-1" />
-                  <span>Dinamo Fans</span>
-                </div>
-              </button>
-              <button
-                className={`flex-1 py-3 text-sm font-medium ${activeTab === "awayTeam" ? "text-emerald-600 border-b-2 border-emerald-600" : "text-gray-600"}`}
-                onClick={() => setActiveTab("awayTeam")}
-              >
-                <div className="flex items-center justify-center">
-                  <Users className="w-5 h-5 mr-1" />
-                  <span>Hajduk Fans</span>
-                </div>
-              </button>
-            </div>
-
-            {/* Chat Messages */}
-            <div className="p-4 h-60 overflow-y-auto bg-gray-50">
-              {event.chats[activeTab].map((chat) => (
-                <div key={chat.id} className="flex mb-3 last:mb-0">
-                  <div className="w-8 h-8 rounded-full overflow-hidden mr-2 flex-shrink-0">
-                    <Image src={chat.avatar || "/placeholder.svg"} alt={chat.user} width={32} height={32} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-baseline">
-                      <span className="font-bold text-sm">{chat.user}</span>
-                      <span className="ml-2 text-xs text-gray-500">{chat.time}</span>
-                    </div>
-                    <p className="text-gray-800">{chat.message}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Chat Input */}
-            <div className="p-2 flex items-center border-t">
-              <input
-                type="text"
-                placeholder="Type a message..."
-                className="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-              />
-              <button
-                className="ml-2 w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center"
-                onClick={sendMessage}
-              >
-                <Send className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

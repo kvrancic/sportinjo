@@ -208,7 +208,7 @@ export default function SportsAroundMe() {
 
   return (
     <>
-      <header className="sportinjo-bg w-screen relative overflow-hidden pt-10 pb-16 text-center">
+      <header className="sportinjo-bg w-screen relative overflow-hidden py-24 pb-16 text-center">
         {/* compact utility bar (notifications - points - avatar) */}
         <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
           <img
@@ -260,35 +260,32 @@ export default function SportsAroundMe() {
               </div>
             </div>
           </div>
+          <div className="flex items-center gap-3">
+  {/* Left side: three equal-width dropdowns */}
+      <div className="grid grid-cols-3 gap-3 flex-1">
+        <button className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700">
+          <span>Sport</span>
+          <ChevronDown className="w-4 h-4 text-gray-500" />
+        </button>
+        <button className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700">
+          <span>Datum</span>
+          <ChevronDown className="w-4 h-4 text-gray-500" />
+        </button>
+        <button className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700">
+          <span>Lokacija</span>
+          <ChevronDown className="w-4 h-4 text-gray-500" />
+        </button>
+      </div>
 
-          <div className="grid grid-cols-3 gap-3">
-            <div className="relative">
-              <button className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700">
-                <span>Sport</span>
-                <ChevronDown className="w-4 h-4 text-gray-500" />
-              </button>
-            </div>
+      {/* Right side: auto-sized search button */}
+      <button className="bg-blue-500 hover:bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg">
+        <Search className="w-5 h-5" />
+      </button>
+    </div>
 
-            <div className="relative">
-              <button className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700">
-                <span>Datum</span>
-                <ChevronDown className="w-4 h-4 text-gray-500" />
-              </button>
-            </div>
+        
 
-            <div className="relative">
-              <button className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700">
-                <span>Lokacija</span>
-                <ChevronDown className="w-4 h-4 text-gray-500" />
-              </button>
-            </div>
-          </div>
 
-          <div className="mt-4 flex justify-end">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg">
-              <Search className="w-5 h-5" />
-            </button>
-          </div>
         </div>
       </div>
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6">

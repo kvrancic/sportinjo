@@ -1,6 +1,6 @@
 # Sportinjo
 
-![Sportinjo Logo](https://via.placeholder.com/800x200/0052cc/ffffff?text=Sportinjo)
+![logo-bijeli](https://github.com/user-attachments/assets/2dd0b7ff-bcc6-44b7-8c6a-e8f289bd3079)
 
 Sportinjo is a modern web application that helps users discover and engage with local sports events in Zagreb and surrounding areas. The platform provides real-time information about matches, tournaments, and recreational activities, fostering community engagement through various interactive features.
 
